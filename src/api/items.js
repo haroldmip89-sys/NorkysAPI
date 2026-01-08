@@ -7,17 +7,11 @@ const API_URL = `${API_BASE_URL}/api/Item`;
 export async function getItems() {
   try {
     const res = await fetch(API_URL);
-
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text}`);
-    }
-
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    if (!res.ok) throw new Error("Error al obtener los ítems");
+    return await res.json();
   } catch (error) {
-    console.error("getItems:", error);
-    return []; // 🔑 NUNCA null
+    console.error(error);
+    return null;
   }
 }
 
@@ -27,40 +21,36 @@ export async function getItems() {
 export async function getItemById(id) {
   try {
     const res = await fetch(`${API_URL}/${id}`);
-
-    if (!res.ok) return null;
-
+    if (!res.ok) throw new Error("Item no encontrado");
     return await res.json();
   } catch (error) {
-    console.error("getItemById:", error);
+    console.error(error);
     return null;
   }
 }
 
 // ----------------------------------------------------------------------
 // Crear ítem
+// body = { nombre, descripcion, precio, imagenUrl, idCategoria }
 // ----------------------------------------------------------------------
 export async function createItem(formData) {
   try {
     const res = await fetch(API_URL, {
       method: "POST",
-      body: formData
+      body: formData // 👈 NO headers
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(text);
-    }
-
+    if (!res.ok) throw new Error("Error al crear el ítem");
     return await res.json();
   } catch (error) {
-    console.error("createItem:", error);
+    console.error(error);
     return null;
   }
 }
 
 // ----------------------------------------------------------------------
 // Actualizar ítem
+// body = { nombre, descripcion, precio, imagenUrl }
 // ----------------------------------------------------------------------
 export async function updateItem(id, formData) {
   try {
@@ -69,21 +59,41 @@ export async function updateItem(id, formData) {
       body: formData
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(text);
-    }
-
+    if (!res.ok) throw new Error("Error al actualizar el ítem");
     return await res.json();
   } catch (error) {
-    console.error("updateItem:", error);
+    console.error(error);
     return null;
   }
 }
-
 // ----------------------------------------------------------------------
 // Eliminar ítem
 // ----------------------------------------------------------------------
 export async function deleteItem(id) {
   try {
-    c
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE"
+    });
+
+    if (res.status === 404) throw new Error("Ítem no encontrado");
+
+    return res.status === 204; // true si se borró
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+// ----------------------------------------------------------------------
+// Obtener ítems por IDCategoria
+// ----------------------------------------------------------------------
+export async function getItemsByCategoria(idCategoria) {
+  try {
+    const res = await fetch(`${API_URL}/categoria/${idCategoria}`);
+    if (!res.ok) throw new Error("Error al obtener los ítems por categoría");
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

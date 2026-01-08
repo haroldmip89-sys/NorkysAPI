@@ -61,13 +61,10 @@ export const deleteCarrito = async (idCarrito) => {
 
 // GET carrito completo con detalles
 export const getCarritoCompleto = async (idCarrito) => {
-  //GET "http://localhost:5218/api/Carrito/${idCarrito}"
-  const res = await fetch(`${API_URL}/${idCarrito}`);
-  //si la respuesta no es ok, lanzar error
+  const res = await fetch(`${API_URL}/detalle/${idCarrito}`);
   if (!res.ok) throw new Error("Carrito no encontrado");
-  //retorna un JSON con el carrito y sus detalles
   return res.json();
-}
+};
 // GET carritos por estado
 export const getCarritosPorEstado = async (estado) => {
   if (!estado) throw new Error("Debe enviar el estado");

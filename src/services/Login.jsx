@@ -31,14 +31,14 @@ export function Login() {
             navigate("/admin");
             Swal.fire({
                 title: "Bienvenido Admin!",
-                text: "Ha ingresado corectamente!",
+                text: "Ha ingresado correctamente!",
                 icon: "success"
             });
         } else {
             navigate("/");
             Swal.fire({
                 title: "Bienvenido a Norkys!",
-                text: "Ha ingresado corectamente!",
+                text: "Ha ingresado correctamente!",
                 icon: "success"
             });
         }

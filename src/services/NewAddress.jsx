@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export function NewAddress() {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState(null);
+    const [mapBloqueado, setMapBloqueado] = useState(true); 
     const [initialPosition, setInitialPosition] = useState(null);
     const [newDireccion, setNewDireccion] = useState({
         idUsuario: 0,
@@ -98,31 +99,125 @@ export function NewAddress() {
     if (!initialPosition) return <p>Cargando mapa...</p>;
     return (
         <>
-            <h2>Nueva Direccion</h2>
-            <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-                <div style={{
-                    width: "100%",
-                    height: "300px",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                }}
-                >
-                    <Maps initialPosition={initialPosition} onSelectPosition={handleSelectPosition} />
+             <div className="space-y-6">
+
+            {/* HEADER */}
+            <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                    Nueva dirección
+                </h2>
+                <p className="text-sm text-gray-500">
+                    Registra una nueva dirección de entrega
+                </p>
+            </div>
+
+            <div className="max-w-3xl mx-auto px-4">
+
+                {/* MAPA */}
+                <div className="rounded-xl overflow-hidden border border-gray-200 mb-3">
+                    <Maps
+                        initialPosition={initialPosition}
+                        onSelectPosition={handleSelectPosition}
+                        readOnly={mapBloqueado}
+                    />
                 </div>
-            </div><br />
-            {/* Aquí va el formulario para crear la dirección */}
-            <form action="" id="formulario" onSubmit={handleSubmit}>
-                Titulo de Direccion: <input type="text" name="tituloDireccion" required value={newDireccion.tituloDireccion} onChange={event => setNewDireccion({ ...newDireccion, tituloDireccion: event.target.value })} /><br />
-                Direccion: <input type="text" name="direccion" required value={newDireccion.direccion} onChange={event => setNewDireccion({ ...newDireccion, direccion: event.target.value })} /><br />
-                Referencia: <input type="text" name="referencia" value={newDireccion.referencia} onChange={event => setNewDireccion({ ...newDireccion, referencia: event.target.value })} /><br />
-                Telefono 1: <input type="text" name="telefono1" required value={newDireccion.telefono1} onChange={event => setNewDireccion({ ...newDireccion, telefono1: event.target.value })} /><br />
-                Telefono 2: <input type="text" placeholder="opcional" name="telefono2" value={newDireccion.telefono2} onChange={event => setNewDireccion({ ...newDireccion, telefono2: event.target.value })} /><br />
-                <input type="text" name="latY" value={newDireccion.latY} readOnly hidden />{/* <br /> */}
-                <input type="text" name="longX" value={newDireccion.longX} readOnly hidden />{/* <br /> */}
-                <p>Latitud: {newDireccion.latY}</p>
-                <p>Longitud: {newDireccion.longX}</p>
-                <button type="submit">Guardar Cambios</button>
-            </form>
+
+                {/* Checkbox bloquear mapa */}
+                <div className="flex items-center mb-2">
+                    <input
+                        type="checkbox"
+                        id="lockMap"
+                        className="mr-2"
+                        checked={mapBloqueado}
+                        onChange={(e) => setMapBloqueado(e.target.checked)}
+                    />
+                    <label htmlFor="lockMap" className="text-sm text-gray-700">
+                        Bloquear selección del mapa
+                    </label>
+                </div>
+
+                {/* FORM */}
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-6 max-w-3xl"
+                    id="formulario"
+                >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        <Input
+                            label="Título de la dirección"
+                            value={newDireccion.tituloDireccion}
+                            onChange={e =>
+                                setNewDireccion({ ...newDireccion, tituloDireccion: e.target.value })
+                            }
+                        />
+
+                        <Input
+                            label="Dirección"
+                            value={newDireccion.direccion}
+                            onChange={e =>
+                                setNewDireccion({ ...newDireccion, direccion: e.target.value })
+                            }
+                        />
+
+                        <Input
+                            label="Referencia"
+                            value={newDireccion.referencia}
+                            onChange={e =>
+                                setNewDireccion({ ...newDireccion, referencia: e.target.value })
+                            }
+                        />
+
+                        <Input
+                            label="Teléfono 1"
+                            value={newDireccion.telefono1}
+                            onChange={e =>
+                                setNewDireccion({ ...newDireccion, telefono1: e.target.value })
+                            }
+                        />
+
+                        <Input
+                            label="Teléfono 2 (opcional)"
+                            value={newDireccion.telefono2}
+                            onChange={e =>
+                                setNewDireccion({ ...newDireccion, telefono2: e.target.value })
+                            }
+                        />
+
+                    </div>
+
+                    <div className="text-sm text-gray-500">
+                        <p>Latitud: {newDireccion.latY}</p>
+                        <p>Longitud: {newDireccion.longX}</p>
+                    </div>
+
+                    <div className="flex justify-end">
+                        <button
+                            type="submit"
+                            className="px-6 py-2.5 rounded-lg norkys-bg-naranja
+                            text-white font-medium hover:opacity-90 transition"
+                        >
+                            Guardar dirección
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
         </>
     )
+}
+function Input({ label, ...props }) {
+    return (
+        <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+                {label}
+            </label>
+            <input
+                {...props}
+                required
+                className="w-full border border-gray-300 rounded-lg
+                px-4 py-2 text-sm focus:ring-2 focus:ring-gray-800"
+            />
+        </div>
+    );
 }

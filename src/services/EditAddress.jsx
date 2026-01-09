@@ -127,7 +127,7 @@ export function EditAddress() {
                                 </label>
                             </div>
                 {/* FORM */}
-                <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
+                <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl" id="formulario">
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 

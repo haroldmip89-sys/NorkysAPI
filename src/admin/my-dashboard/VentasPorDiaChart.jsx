@@ -1,5 +1,4 @@
 import { Bar } from "react-chartjs-2";
-import { Line } from "react-chartjs-2";
 import { Chart  } from "react-chartjs-2";
 
 import {
@@ -52,7 +51,7 @@ export function VentasPorDiaChart({ data }) {
 
   return (
     <Chart
-      type="line"   // 🔥 aquí decides: "bar" o "line"
+      type="bar"   // 🔥 aquí decides: "bar" o "line"
       data={chartData}
       options={options}
     />

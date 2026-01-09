@@ -29,6 +29,7 @@ import { EditItem } from './admin/EditItem.jsx'
 import { NewItem } from './admin/NewItem.jsx'
 import { EditCart } from './admin/EditCart.jsx'
 import { EditCategories } from './admin/EditCategories.jsx'
+import "./tables/chartjs";
 
 export function App() {
   return (

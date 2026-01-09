@@ -51,7 +51,7 @@ export function VentasPorDiaChart({ data }) {
 
   return (
     <Chart
-      type="line"   // 🔥 aquí decides: "bar" o "line"
+      type="bar"   // 🔥 aquí decides: "bar" o "line"
       data={chartData}
       options={options}
     />
